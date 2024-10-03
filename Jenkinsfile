@@ -10,7 +10,7 @@ pipeline {
 
         stage('Build image'){
             steps{
-                sh "docker build Dockerfile"
+                sh "docker build /var/lib/jenkins/workspace/prova/Dockerfile"
             }
         }
         
