@@ -34,9 +34,9 @@ pipeline {
                 script {
                     // Esegui il push manualmente dell'immagine Docker
                     docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-                        sh "docker tag httpd dragonnest/httpd:${env.BUILD_NUMBER}"
-                        sh "docker push dragonnest/httpd_vuln:${env.BUILD_NUMBER}"
-                        sh "docker push dragonnest/httpd_vuln:latest"
+                        sh "docker tag ubuntu dragonnest/ubuntu_secure:${env.BUILD_NUMBER}"
+                        sh "docker push dragonnest/ubuntu_secure:${env.BUILD_NUMBER}"
+                        sh "docker push dragonnest/ubuntu_secure:latest"
                     }
                 }
             }
