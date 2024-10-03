@@ -1,1 +1,1 @@
-FROM sasanlabs/owasp-vulnerableapp
+FROM sasanlabs/owasp-vulnerableapp:latest
