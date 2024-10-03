@@ -1,10 +1,6 @@
 pipeline {
     agent any
 
-    environment{
-        def app
-    }
-
     stages {
         stage('Clone repository') {
             steps {
@@ -15,7 +11,7 @@ pipeline {
         stage('Build image') {
             steps {
                 script{
-                    sh 'docker-compose up -d'
+                    app = sh 'docker-compose up -d'
                 }
             }
         }
