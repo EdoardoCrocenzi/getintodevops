@@ -29,10 +29,10 @@ pipeline {
             steps {
                 script {
                     // Esegui il push manualmente dell'immagine Docker
-                    docker.withRegistry('https://registry.hub.docker.com', 'git') {
-                        sh 'docker tag vulhub/nginx dragonnest/nginx:${env.BUILD_NUMBER}'
-                        sh 'docker push dragonnest/vulnhub:${env.BUILD_NUMBER}'
-                        sh 'docker push dragonnest/vulnhub:latest'
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+                        sh "docker tag ${env.IMAGE_ID} ${IMAGE_NAME}:${env.BUILD_NUMBER}"
+                        sh "docker push ${IMAGE_NAME}:${env.BUILD_NUMBER}"
+                        sh "docker push ${IMAGE_NAME}:latest"
                     }
                 }
             }
