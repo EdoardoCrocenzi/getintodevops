@@ -17,7 +17,7 @@ pipeline {
         stage('Test image') {
             steps {
                 script {
-                    def IMAGE_ID = sh(script: "docker images | grep -E '^httpd' | awk '{print \$3}'", returnStdout: true).trim()
+                    def IMAGE_ID = sh(script: "docker images | grep -E '^ubuntu' | awk '{print \$3}'", returnStdout: true).trim()
                     env.IMAGE_ID = IMAGE_ID
                 }
             }
