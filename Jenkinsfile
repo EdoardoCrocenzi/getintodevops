@@ -15,7 +15,7 @@ node {
     }
     stage('Extract Image ID'){
         steps{
-            def IMAGE_ID = sh(script: "docker images | grep -E '^dragonnest' | awk '{print $3}'")
+            def IMAGE_ID = sh(script: "docker images | grep -E '^dragonnest' | awk '{print \$3}'")
             env.IMAGE_ID = IMAGE_ID
         }
     }
