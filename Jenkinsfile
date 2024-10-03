@@ -33,7 +33,7 @@ pipeline {
             steps {
                 script {
                     // Esegui il push manualmente dell'immagine Docker
-                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+                    docker.withRegistry('https://hub.docker.com', 'docker-hub-credentials') {
                         // Tagga l'immagine
                         sh "docker tag ubuntu dragonnest/hello:1.0"
                         // Push dell'immagine
