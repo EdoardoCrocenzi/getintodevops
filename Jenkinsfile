@@ -24,7 +24,9 @@ pipeline {
         }
 
         stage('Get Image Vuln'){
-             getImageVulnsFromQualys imageIds: env.IMAGE_ID, useGlobalConfig: true   
+            steps{
+                 getImageVulnsFromQualys imageIds: env.IMAGE_ID, useGlobalConfig: true   
+            }
         }
 
         stage('Push image') {
