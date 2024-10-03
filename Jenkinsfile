@@ -17,7 +17,7 @@ pipeline {
         stage('Test image') {
             steps {
                 script {
-                    def IMAGE_ID = sh(script: "docker images | grep -E '^ubuntu' | awk '{print \$3}'", returnStdout: true).trim()
+                    def IMAGE_ID = sh(script: "docker images | grep -E '^sasanlabs' | awk '{print \$3}'", returnStdout: true).trim()
                     env.IMAGE_ID = IMAGE_ID
                 }
             }
@@ -35,9 +35,9 @@ pipeline {
                     // Esegui il push manualmente dell'immagine Docker
                     docker.withRegistry('https://registry.hub.docker.com','docker-hub-credentials') {
                         // Tagga l'immagine
-                        sh "docker tag ubuntu registry.hub.docker.com/dragonnest/hello:1.0"
+                        sh "docker tag sasanlabs registry.hub.docker.com/dragonnest/pippo:1.0"
                         // Push dell'immagine
-                        sh "docker push registry.hub.docker.com/dragonnest/hello:1.0"
+                        sh "docker push registry.hub.docker.com/dragonnest/pippo:1.0"
                     }
                 }
             }
