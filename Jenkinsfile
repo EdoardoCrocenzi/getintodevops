@@ -11,7 +11,7 @@ pipeline {
         stage('Build image') {
             steps {
                 script {
-                    app = docker.build("dragonnest/hellonode")
+                    app = sh(script: "docker-compose up /home/edoardo/vulhub/nginx/CVE-2017-7529/")
                 }
             }
         }
@@ -19,7 +19,7 @@ pipeline {
         stage('Test image') {
             steps {
                 script {
-                    def IMAGE_ID = sh(script: "docker images | grep -E '^dragonnest' | awk '{print \$3}'", returnStdout: true).trim()
+                    def IMAGE_ID = sh(script: "docker images | grep -E '^vulnhub' | awk '{print \$3}'", returnStdout: true).trim()
                     env.IMAGE_ID = IMAGE_ID
                     app.inside {
                         sh 'echo "Testing the app"'
