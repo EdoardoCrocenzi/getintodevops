@@ -35,8 +35,8 @@ pipeline {
                     // Esegui il push manualmente dell'immagine Docker
                     docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
                         sh "docker tag ubuntu dragonnest/ubuntu:${env.BUILD_NUMBER}"
-                        sh "docker push dragonnest/ubuntu_secure:${env.BUILD_NUMBER}"
-                        sh "docker push dragonnest/ubuntu_secure:latest"
+                        sh "docker push dragonnest/ubuntu:${env.BUILD_NUMBER}"
+                        sh "docker push dragonnest/ubuntu:latest"
                     }
                 }
             }
