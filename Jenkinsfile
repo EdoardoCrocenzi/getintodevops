@@ -11,7 +11,7 @@ pipeline {
         stage('Build image') {
             steps {
                 script{
-                    docker.compose("vulnhub/nginx")
+                    sh 'docker-compose up -d'
                 }
             }
         }
