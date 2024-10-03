@@ -7,15 +7,6 @@ pipeline {
                 checkout scm
             }
         }
-
-        stage('Build image') {
-            steps {
-                script{
-                    app = sh 'docker-compose build'
-                }
-            }
-        }
-
         stage('Test image') {
             steps {
                 script {
