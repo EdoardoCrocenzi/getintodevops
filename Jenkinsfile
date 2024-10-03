@@ -26,9 +26,9 @@ pipeline {
                 script {
                     // Esegui il push manualmente dell'immagine Docker
                     docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-                        sh "docker tag vulnhub/nginx dragonnest/nginx_vuln:${env.BUILD_NUMBER}"
-                        sh "docker push dragonnest/nginx_vuln:${env.BUILD_NUMBER}"
-                        sh "docker push dragonnest/nginx_vuln:latest"
+                        sh "docker tag vulnhub/httpd dragonnest/httpd:${env.BUILD_NUMBER}"
+                        sh "docker push dragonnest/httpd_vuln:${env.BUILD_NUMBER}"
+                        sh "docker push dragonnest/httpd_vuln:latest"
                     }
                 }
             }
