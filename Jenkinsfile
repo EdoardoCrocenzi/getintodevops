@@ -39,14 +39,4 @@ pipeline {
             }
         }
     }
-
-    post {
-        always {
-            script {
-                if (env.IMAGE_ID) {
-                    sh "docker rmi ${env.IMAGE_ID}"
-                }
-            }
-        }
-    }
 }
