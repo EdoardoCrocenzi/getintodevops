@@ -13,6 +13,17 @@ node {
 
         app = docker.build("dragonnest/hellonode")
     }
+    stage('Extract Image ID'){
+        steps{
+            def IMAGE_ID = sh(script: "docker images | grep -E '^dragonnest' | awk '{print $3}'")
+            env.IMAGE_ID = IMAGE_ID
+        }
+    }
+    stage('Get Image Vulns'){
+        steps{
+            getImageVulnsFromQualys imageIds: env.IMAGE_ID, useGlobalConfig: true
+        }
+    }
 
     stage('Test image') {
         /* Ideally, we would run a test framework against our image.
