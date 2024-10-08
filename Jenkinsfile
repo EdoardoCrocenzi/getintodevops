@@ -1,11 +1,6 @@
 pipeline {
     agent any
-
-    tools {
-        // Assicurati che 'SonarQube Scanner' sia configurato nella tua Jenkins
-        sonarQube 'provaprova' 
-    }
-
+    
     stages {
         stage('Clone repository') {
             steps {
