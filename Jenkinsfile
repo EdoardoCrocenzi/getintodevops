@@ -11,7 +11,7 @@ pipeline {
         stage('SonarQube Analysis'){
             def scannerHome = tool 'provaprova
             withSonarQubeEnv(){
-                sh "./bin/sonar-scanner"
+                sh "./sonar-scanner/bin/sonar-scanner"
             }
         }
 
