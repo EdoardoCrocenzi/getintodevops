@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    tools {
+        // Assicurati che 'SonarQube Scanner' sia configurato nella tua Jenkins
+        sonarQube 'provaprova' 
+    }
+
     stages {
         stage('Clone repository') {
             steps {
@@ -12,7 +17,7 @@ pipeline {
             steps{
                 def scannerHome = tool 'provaprova'
                 withSonarQubeEnv(){
-                    sh "./sonar-scanner/bin/sonar-scanner"
+                    sh "${scannerHome}/bin/sonar-scanner"
                 }
             }
         }
