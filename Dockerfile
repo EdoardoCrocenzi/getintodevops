@@ -1,5 +1,5 @@
 # Utilizza una versione di base obsoleta
-FROM ubuntu:16.04
+FROM ubuntu:latest
 
 # Non specifica l'utente, esegue i comandi come root
 RUN apt-get update && apt-get install -y \
