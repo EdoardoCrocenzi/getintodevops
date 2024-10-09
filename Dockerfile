@@ -1,26 +1,28 @@
-# Utilizza una versione di base obsoleta
-FROM ubuntu:latest
+# Utilizza un'immagine base con vulnerabilità note
+FROM python:3.7-slim
 
-# Non specifica l'utente, esegue i comandi come root
-RUN apt-get update && apt-get install -y \
-    curl \
-    vim \
-    python3-pip
+# Installazione di pacchetti senza aggiornare prima l'indice (errore di best practice)
+RUN apt-get install -y \
+    git \
+    wget
 
-# Espone una porta senza specificare chiaramente l'uso (rischi di sicurezza)
-EXPOSE 8080
+# Non specifica un utente non privilegiato (tutto viene eseguito come root)
+RUN mkdir /app
+WORKDIR /app
 
-# Copia un file da una directory errata (errore di percorso)
-COPY ./non_esistente/file.py /app/
+# Scarica un file da una fonte non sicura (http invece di https)
+RUN wget http://example.com/app.tar.gz -O app.tar.gz \
+    && tar -xvzf app.tar.gz
 
-# Installa una dipendenza direttamente senza hash per la verifica dell'integrità
-RUN pip3 install flask==1.0.2
+# Copia di file sensibili non necessari nell'immagine
+COPY ./secret_keys.txt /app/
 
-# Non esegue cleanup dei pacchetti temporanei per ridurre la dimensione dell'immagine
-RUN apt-get update && apt-get install -y build-essential
+# Esecuzione di una versione di Flask vulnerabile
+RUN pip install flask==0.12
 
-# Non imposta variabili d'ambiente critiche
-ENV APP_ENV=development
+# Non vengono eseguite ottimizzazioni per ridurre le dimensioni dell'immagine
+RUN apt-get install -y \
+    gcc
 
-# Comando ENTRYPOINT mancante
-CMD ["python3", "/app/app.py"]
+# Comando CMD poco chiaro e non ottimizzato
+CMD python app.py
