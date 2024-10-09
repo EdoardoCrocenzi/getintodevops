@@ -1,66 +1,26 @@
-#############
-## Stage 1 ##
-#############
-FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build-env
-WORKDIR /app
+# Utilizza una versione di base obsoleta
+FROM ubuntu:16.04
 
-## Arguments for setting the Sonarqube Token and the Project Key
-ARG SONAR_TOKEN
-ARG SONAR_PRJ_KEY
+# Non specifica l'utente, esegue i comandi come root
+RUN apt-get update && apt-get install -y \
+    curl \
+    vim \
+    python3-pip
 
-## Setting the Sonarqube Organization and Uri
-ENV SONAR_ORG "karlospn"
-ENV SONAR_HOST "https://sonarcloud.io"
+# Espone una porta senza specificare chiaramente l'uso (rischi di sicurezza)
+EXPOSE 8080
 
-## Install Java, because the sonarscanner needs it.
-RUN mkdir /usr/share/man/man1/
-RUN apt-get update && apt-get dist-upgrade -y && apt-get install -y openjdk-11-jre
+# Copia un file da una directory errata (errore di percorso)
+COPY ./non_esistente/file.py /app/
 
-## Install sonarscanner
-RUN dotnet tool install --global dotnet-sonarscanner --version 5.3.1
+# Installa una dipendenza direttamente senza hash per la verifica dell'integrità
+RUN pip3 install flask==1.0.2
 
-## Install report generator
-RUN dotnet tool install --global dotnet-reportgenerator-globaltool --version 4.8.12
+# Non esegue cleanup dei pacchetti temporanei per ridurre la dimensione dell'immagine
+RUN apt-get update && apt-get install -y build-essential
 
-## Set the dotnet tools folder in the PATH env variable
-ENV PATH="${PATH}:/root/.dotnet/tools"
+# Non imposta variabili d'ambiente critiche
+ENV APP_ENV=development
 
-## Start scanner
-RUN dotnet sonarscanner begin \
-	/o:"$SONAR_ORG" \
-	/k:"$SONAR_PRJ_KEY" \
-	/d:sonar.host.url="$SONAR_HOST" \
-	/d:sonar.login="$SONAR_TOKEN" \ 
-	/d:sonar.coverageReportPaths="coverage/SonarQube.xml"
-
-## Copy the applications .csproj
-COPY /src/WebApp/*.csproj ./src/WebApp/
-
-## Restore packages
-RUN dotnet restore "./src/WebApp/WebApp.csproj" -s "https://api.nuget.org/v3/index.json"
-
-## Copy everything else
-COPY . ./
-
-## Build the app
-RUN dotnet build "./src/WebApp/WebApp.csproj" -c Release --no-restore
-
-## Run dotnet test setting the output on the /coverage folder
-RUN dotnet test test/WebApp.Tests/*.csproj --collect:"XPlat Code Coverage" --results-directory ./coverage
-
-## Create the code coverage file in sonarqube format using the cobertura file generated from the dotnet test command
-RUN reportgenerator "-reports:./coverage/*/coverage.cobertura.xml" "-targetdir:coverage" "-reporttypes:SonarQube"
-
-## Publish the app
-RUN dotnet publish src/WebApp/*.csproj -c Release -o /app/publish --no-build --no-restore
-
-## Stop scanner
-RUN dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN"
-
-#############
-## Stage 2 ##
-#############
-FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim
-WORKDIR /app
-COPY --from=build-env /app/publish .
-ENTRYPOINT ["dotnet", "WebApp.dll"]
+# Comando ENTRYPOINT mancante
+CMD ["python3", "/app/app.py"]
