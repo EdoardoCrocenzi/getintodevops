@@ -7,16 +7,7 @@ pipeline {
                 checkout scm
             }
         }
-
-        stage('SonarQube Analysis'){
-            steps{
-                def scannerHome = tool 'provaprova'
-                withSonarQubeEnv(){
-                    sh "${scannerHome}/bin/sonar-scanner"
-                }
-            }
-        }
-
+        
         stage('Build image'){
             steps{
                 sh "docker build /var/lib/jenkins/workspace/prova/"
