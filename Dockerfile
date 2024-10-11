@@ -2,7 +2,7 @@
 FROM python:3.7-slim
 
 # Installazione di pacchetti senza aggiornare prima l'indice (errore di best practice)
-RUN apt-get install -y git wget
+RUN apt update && apt-get install -y git wget
 
 # Non specifica un utente non privilegiato (tutto viene eseguito come root)
 RUN mkdir /app
