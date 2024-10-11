@@ -10,10 +10,6 @@ RUN apt-get install -y \
 RUN mkdir /app
 WORKDIR /app
 
-# Scarica un file da una fonte non sicura (http invece di https)
-RUN wget http://example.com/app.tar.gz -O app.tar.gz \
-    && tar -xvzf app.tar.gz
-
 # Copia di file sensibili non necessari nell'immagine
 COPY ./secret_keys.txt /app/
 
