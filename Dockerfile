@@ -15,8 +15,7 @@ COPY ./secret_keys.txt /app/
 RUN pip install flask==0.12
 
 # Non vengono eseguite ottimizzazioni per ridurre le dimensioni dell'immagine
-RUN apt-get install -y \
-    gcc
+RUN apt-get install -y gcc
 
 # Comando CMD poco chiaro e non ottimizzato
 CMD python app.py
